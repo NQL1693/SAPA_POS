@@ -49,6 +49,16 @@ export default function MenuManager() {
   const [productCost, setProductCost] = useState("");
   const [productEmoji, setProductEmoji] = useState("☕");
 
+  const [editingProduct, setEditingProduct] =
+    useState<Product | null>(null);
+
+  const [editName, setEditName] = useState("");
+  const [editPrice, setEditPrice] = useState("");
+  const [editCost, setEditCost] = useState("");
+  const [editEmoji, setEditEmoji] = useState("☕");
+  const [editCategoryId, setEditCategoryId] =
+    useState<number | null>(null);
+
   useEffect(() => {
     loadData();
   }, []);
@@ -228,6 +238,94 @@ export default function MenuManager() {
     setProductCost("");
     setProductEmoji("☕");
     setShowProductForm(false);
+  }
+
+  function openEditProduct(product: Product) {
+    setErrorMessage("");
+    setEditingProduct(product);
+    setEditName(product.name);
+    setEditPrice(String(product.price));
+    setEditCost(String(product.cost));
+    setEditEmoji(product.emoji || "☕");
+    setEditCategoryId(product.category_id);
+  }
+
+  function closeEditProduct() {
+    if (saving) return;
+
+    setEditingProduct(null);
+    setEditName("");
+    setEditPrice("");
+    setEditCost("");
+    setEditEmoji("☕");
+    setEditCategoryId(null);
+  }
+
+  async function updateProduct() {
+    if (!editingProduct) return;
+
+    const name = editName.trim();
+    const price = Number(editPrice);
+    const cost = Number(editCost || 0);
+
+    if (!editCategoryId) {
+      setErrorMessage("Hãy chọn danh mục cho món.");
+      return;
+    }
+
+    if (!name) {
+      setErrorMessage("Hãy nhập tên món.");
+      return;
+    }
+
+    if (!Number.isFinite(price) || price <= 0) {
+      setErrorMessage("Giá bán phải lớn hơn 0.");
+      return;
+    }
+
+    if (!Number.isFinite(cost) || cost < 0) {
+      setErrorMessage("Giá vốn không được nhỏ hơn 0.");
+      return;
+    }
+
+    setSaving(true);
+    setErrorMessage("");
+
+    const { data, error } = await supabase
+      .from("products")
+      .update({
+        category_id: editCategoryId,
+        name,
+        price,
+        cost,
+        emoji: editEmoji.trim() || "☕",
+      })
+      .eq("id", editingProduct.id)
+      .select()
+      .single();
+
+    setSaving(false);
+
+    if (error) {
+      console.error(error);
+      setErrorMessage(
+        "Không sửa được món: " + error.message
+      );
+      return;
+    }
+
+    const updatedProduct = data as Product;
+
+    setProducts((current) =>
+      current.map((product) =>
+        product.id === updatedProduct.id
+          ? updatedProduct
+          : product
+      )
+    );
+
+    setSelectedCategoryId(updatedProduct.category_id);
+    closeEditProduct();
   }
 
   async function deleteProduct(product: Product) {
@@ -523,13 +621,23 @@ export default function MenuManager() {
                             </p>
                           </div>
 
-                          <button
-                            type="button"
-                            onClick={() => deleteProduct(product)}
-                            className="shrink-0 rounded-xl bg-[#fff0f4] px-3 py-2 text-xs font-bold text-[#c85e82]"
-                          >
-                            Xóa
-                          </button>
+                          <div className="flex shrink-0 gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => openEditProduct(product)}
+                              className="rounded-xl bg-[#f8c8d8] px-3 py-2 text-xs font-bold text-[#9f4f6c]"
+                            >
+                              Sửa
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => deleteProduct(product)}
+                              className="rounded-xl bg-[#fff0f4] px-3 py-2 text-xs font-bold text-[#c85e82]"
+                            >
+                              Xóa
+                            </button>
+                          </div>
                         </div>
 
                         <div className="mt-4 grid grid-cols-2 gap-2">
@@ -772,17 +880,29 @@ export default function MenuManager() {
                               </td>
 
                               <td className="px-4 py-4 text-right">
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    deleteProduct(
-                                      product
-                                    )
-                                  }
-                                  className="rounded-xl bg-[#fff0f4] px-3 py-2 text-xs font-bold text-[#c85e82] transition hover:bg-[#ffe1ea]"
-                                >
-                                  Xóa
-                                </button>
+                                <div className="flex justify-end gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      openEditProduct(product)
+                                    }
+                                    className="rounded-xl bg-[#f8c8d8] px-3 py-2 text-xs font-bold text-[#9f4f6c] transition hover:bg-[#f2b4c9]"
+                                  >
+                                    Sửa
+                                  </button>
+
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      deleteProduct(
+                                        product
+                                      )
+                                    }
+                                    className="rounded-xl bg-[#fff0f4] px-3 py-2 text-xs font-bold text-[#c85e82] transition hover:bg-[#ffe1ea]"
+                                  >
+                                    Xóa
+                                  </button>
+                                </div>
                               </td>
                             </tr>
                           );
@@ -864,6 +984,156 @@ export default function MenuManager() {
                 {saving
                   ? "Đang lưu..."
                   : "Tạo mục"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {editingProduct && (
+        <div className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-[#4b2734]/40 p-2 backdrop-blur-sm sm:items-center sm:p-4">
+          <div className="pos-modal max-h-[calc(100dvh-16px)] w-full max-w-md overflow-y-auto rounded-[26px] bg-white p-4 shadow-2xl sm:rounded-[30px] sm:p-6">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-sm font-bold text-[#d96f94]">
+                  Sapa Coffee POS
+                </p>
+
+                <h2 className="mt-1 text-xl font-bold text-[#633c49]">
+                  ✏️ Sửa món
+                </h2>
+
+                <p className="mt-1 text-sm text-[#a47b87]">
+                  Chỉ cập nhật món hiện tại. Hóa đơn cũ không bị thay đổi.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                disabled={saving}
+                onClick={closeEditProduct}
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#fff0f4] text-xl font-bold text-[#a95a75] disabled:opacity-40"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="mt-5 space-y-4">
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-[#633c49]">
+                  Danh mục
+                </label>
+
+                <select
+                  value={editCategoryId ?? ""}
+                  disabled={saving}
+                  onChange={(event) =>
+                    setEditCategoryId(
+                      Number(event.target.value)
+                    )
+                  }
+                  className="w-full rounded-2xl border border-[#efd5df] bg-white px-4 py-3 outline-none focus:border-[#e996b2] focus:ring-4 focus:ring-[#f8dce5]"
+                >
+                  {categories.map((category) => (
+                    <option
+                      key={category.id}
+                      value={category.id}
+                    >
+                      {category.emoji || "☕"} {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-[#633c49]">
+                  Tên món
+                </label>
+
+                <input
+                  value={editName}
+                  disabled={saving}
+                  onChange={(event) =>
+                    setEditName(event.target.value)
+                  }
+                  placeholder="Cà phê sữa"
+                  className="w-full rounded-2xl border border-[#efd5df] px-4 py-3 outline-none focus:border-[#e996b2] focus:ring-4 focus:ring-[#f8dce5]"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-[#633c49]">
+                    Giá bán
+                  </label>
+
+                  <input
+                    type="number"
+                    min="0"
+                    value={editPrice}
+                    disabled={saving}
+                    onChange={(event) =>
+                      setEditPrice(event.target.value)
+                    }
+                    placeholder="30000"
+                    className="w-full rounded-2xl border border-[#efd5df] px-4 py-3 outline-none focus:border-[#e996b2]"
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-[#633c49]">
+                    Giá vốn
+                  </label>
+
+                  <input
+                    type="number"
+                    min="0"
+                    value={editCost}
+                    disabled={saving}
+                    onChange={(event) =>
+                      setEditCost(event.target.value)
+                    }
+                    placeholder="10000"
+                    className="w-full rounded-2xl border border-[#efd5df] px-4 py-3 outline-none focus:border-[#e996b2]"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-[#633c49]">
+                  Biểu tượng
+                </label>
+
+                <input
+                  value={editEmoji}
+                  disabled={saving}
+                  onChange={(event) =>
+                    setEditEmoji(event.target.value)
+                  }
+                  className="w-full rounded-2xl border border-[#efd5df] px-4 py-3 text-2xl outline-none focus:border-[#e996b2]"
+                />
+              </div>
+            </div>
+
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                disabled={saving}
+                onClick={closeEditProduct}
+                className="rounded-2xl border border-[#efd5df] py-3 font-semibold text-[#805965] disabled:opacity-50"
+              >
+                Hủy
+              </button>
+
+              <button
+                type="button"
+                disabled={saving}
+                onClick={updateProduct}
+                className="rounded-2xl bg-gradient-to-r from-[#e88eab] to-[#d96f94] py-3 font-bold text-white shadow-lg shadow-[#e6a1b8]/30 disabled:opacity-50"
+              >
+                {saving
+                  ? "Đang lưu..."
+                  : "Lưu thay đổi"}
               </button>
             </div>
           </div>
