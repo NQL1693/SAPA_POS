@@ -1,30 +1,34 @@
+"use client";
+
+import { LogoutButton } from "./LogoutButton";
+
 export default function Header() {
   return (
-    <header className="flex items-center justify-between border-b border-[#f4d8e1] bg-white px-5 py-4 shadow-sm md:px-8">
-      <div className="flex items-center gap-3">
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#f8c8d8] text-2xl shadow-sm">
-          🌸
+    <header className="sticky top-0 z-40 border-b border-[#f2d6df] bg-white/95 shadow-sm backdrop-blur">
+      <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between gap-3 px-4 py-3 md:px-6">
+
+        {/* LOGO + NAME */}
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#fff0f4] to-[#ffdce7] text-xl shadow-sm">
+            ☕
+          </div>
+
+          <div className="min-w-0">
+            <h1 className="truncate text-base font-extrabold tracking-tight text-[#633c49] sm:text-lg">
+              Sapa Coffee POS
+            </h1>
+
+            <p className="hidden text-xs font-medium text-[#a47b87] sm:block">
+              Quản lý bán hàng
+            </p>
+          </div>
         </div>
 
-        <div>
-          <h1 className="text-xl font-bold tracking-tight text-[#633c49]">
-            Pink Coffee
-          </h1>
-
-          <p className="text-xs text-[#a47b87]">
-            Thu ngân
-          </p>
+        {/* RIGHT */}
+        <div className="flex shrink-0 items-center gap-2">
+          <LogoutButton />
         </div>
-      </div>
 
-      <div className="hidden rounded-2xl bg-[#fff0f4] px-4 py-2 text-right sm:block">
-        <p className="text-xs text-[#a47b87]">
-          Hôm nay
-        </p>
-
-        <p className="font-semibold text-[#633c49]">
-          17 tháng 8, 2026
-        </p>
       </div>
     </header>
   );
