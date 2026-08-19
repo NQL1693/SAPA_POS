@@ -337,7 +337,7 @@ export default function MenuManager() {
 
   return (
     <div>
-      <div className="mb-5 rounded-[24px] border border-[#f2d6df] bg-white p-4 sm:rounded-[28px] sm:p-5 shadow-sm">
+      <div className="mb-5 rounded-[28px] border border-[#f2d6df] bg-white p-5 shadow-sm">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm font-semibold text-[#d96f94]">
@@ -353,13 +353,13 @@ export default function MenuManager() {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
             <button
               type="button"
               onClick={() =>
                 setShowCategoryForm(true)
               }
-              className="rounded-2xl border border-[#efcbd7] bg-white px-4 py-3 text-sm font-bold text-[#c85e82] transition hover:bg-[#fff5f8]"
+              className="w-full rounded-2xl border border-[#efcbd7] bg-white px-3 py-3 text-sm font-bold sm:w-auto sm:px-4 text-[#c85e82] transition hover:bg-[#fff5f8]"
             >
               ＋ Tạo mục
             </button>
@@ -370,7 +370,7 @@ export default function MenuManager() {
               onClick={() =>
                 setShowProductForm(true)
               }
-              className="rounded-2xl bg-gradient-to-r from-[#e88eab] to-[#d96f94] px-4 py-3 text-sm font-bold text-white shadow-lg shadow-[#e6a1b8]/30 disabled:cursor-not-allowed disabled:opacity-40"
+              className="w-full rounded-2xl bg-gradient-to-r from-[#e88eab] to-[#d96f94] px-3 py-3 text-sm font-bold sm:w-auto sm:px-4 text-white shadow-lg shadow-[#e6a1b8]/30 disabled:cursor-not-allowed disabled:opacity-40"
             >
               ＋ Thêm món
             </button>
@@ -384,7 +384,184 @@ export default function MenuManager() {
         </div>
       )}
 
-      <div className="grid gap-5 lg:grid-cols-[280px_1fr]">
+
+      {/* MOBILE: danh mục ngang + món dạng card */}
+      <div className="space-y-4 lg:hidden">
+        <section className="rounded-[24px] border border-[#f2d6df] bg-white p-4 shadow-sm">
+          <div className="mb-3 flex items-center justify-between">
+            <p className="text-xs font-semibold uppercase tracking-wider text-[#b18793]">
+              Danh mục
+            </p>
+            <span className="text-xs text-[#b18793]">
+              {categories.length} mục
+            </span>
+          </div>
+
+          {categories.length === 0 ? (
+            <div className="rounded-2xl bg-[#fff8fa] p-5 text-center">
+              <div className="text-3xl">🌸</div>
+              <p className="mt-2 text-sm font-semibold text-[#633c49]">
+                Chưa có mục nào
+              </p>
+              <button
+                type="button"
+                onClick={() => setShowCategoryForm(true)}
+                className="mt-3 text-sm font-bold text-[#d96f94]"
+              >
+                ＋ Tạo mục đầu tiên
+              </button>
+            </div>
+          ) : (
+            <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-2">
+              {categories.map((category) => {
+                const active = category.id === selectedCategoryId;
+                const itemCount = products.filter(
+                  (product) => product.category_id === category.id
+                ).length;
+
+                return (
+                  <div
+                    key={category.id}
+                    className={`flex shrink-0 items-center rounded-2xl border ${
+                      active
+                        ? "border-[#efb2c6] bg-[#f8c8d8]"
+                        : "border-[#f2d6df] bg-white"
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setSelectedCategoryId(category.id)}
+                      className="flex items-center gap-2 px-3 py-2.5"
+                    >
+                      <span>{category.emoji || "☕"}</span>
+                      <span className="max-w-[120px] truncate text-sm font-bold text-[#633c49]">
+                        {category.name}
+                      </span>
+                      <span className="rounded-full bg-white/80 px-1.5 py-0.5 text-[10px] font-bold text-[#805965]">
+                        {itemCount}
+                      </span>
+                    </button>
+
+                    <button
+                      type="button"
+                      title="Xóa mục"
+                      onClick={() => deleteCategory(category)}
+                      className="mr-1 flex h-8 w-8 items-center justify-center rounded-xl text-[#bd6c87]"
+                    >
+                      ×
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </section>
+
+        <section className="rounded-[24px] border border-[#f2d6df] bg-white p-4 shadow-sm">
+          {!selectedCategory ? (
+            <div className="flex min-h-[260px] flex-col items-center justify-center text-center">
+              <div className="text-5xl">☕</div>
+              <h2 className="mt-4 text-lg font-bold text-[#633c49]">
+                Tạo danh mục đầu tiên
+              </h2>
+              <p className="mt-1 text-sm text-[#a47b87]">
+                Ví dụ: Cà phê, Trà, Matcha, Bánh...
+              </p>
+            </div>
+          ) : (
+            <>
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <h2 className="truncate text-xl font-bold text-[#633c49]">
+                    {selectedCategory.emoji || "☕"} {selectedCategory.name}
+                  </h2>
+                  <p className="mt-1 text-sm text-[#a47b87]">
+                    {visibleProducts.length} món
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setShowProductForm(true)}
+                  className="shrink-0 rounded-2xl bg-[#fff0f4] px-3 py-2.5 text-sm font-bold text-[#c85e82]"
+                >
+                  ＋ Thêm
+                </button>
+              </div>
+
+              {visibleProducts.length === 0 ? (
+                <div className="flex min-h-[260px] flex-col items-center justify-center rounded-3xl bg-[#fff8fa] text-center">
+                  <div className="text-5xl">🥤</div>
+                  <p className="mt-4 font-bold text-[#633c49]">
+                    Chưa có món nào
+                  </p>
+                  <p className="mt-1 text-sm text-[#a47b87]">
+                    Thêm món đầu tiên vào mục này.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {visibleProducts.map((product) => {
+                    const profit = product.price - product.cost;
+
+                    return (
+                      <article
+                        key={product.id}
+                        className="rounded-2xl border border-[#f4dce4] bg-[#fffafb] p-4"
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#fff0f4] text-2xl">
+                            {product.emoji || "☕"}
+                          </div>
+
+                          <div className="min-w-0 flex-1">
+                            <p className="break-words font-bold text-[#633c49]">
+                              {product.name}
+                            </p>
+                            <p className="mt-1 text-sm font-bold text-[#d96f94]">
+                              {formatPrice(product.price)}
+                            </p>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => deleteProduct(product)}
+                            className="shrink-0 rounded-xl bg-[#fff0f4] px-3 py-2 text-xs font-bold text-[#c85e82]"
+                          >
+                            Xóa
+                          </button>
+                        </div>
+
+                        <div className="mt-4 grid grid-cols-2 gap-2">
+                          <div className="rounded-xl bg-white p-3">
+                            <p className="text-[11px] font-semibold uppercase text-[#b18793]">
+                              Giá vốn
+                            </p>
+                            <p className="mt-1 font-semibold text-[#805965]">
+                              {formatPrice(product.cost)}
+                            </p>
+                          </div>
+
+                          <div className="rounded-xl bg-white p-3">
+                            <p className="text-[11px] font-semibold uppercase text-[#b18793]">
+                              Lợi nhuận / ly
+                            </p>
+                            <p className="mt-1 font-bold text-[#d96f94]">
+                              {formatPrice(profit)}
+                            </p>
+                          </div>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              )}
+            </>
+          )}
+        </section>
+      </div>
+
+      <div className="hidden gap-5 lg:grid lg:grid-cols-[280px_1fr]">
         <aside className="rounded-[28px] border border-[#f2d6df] bg-white p-4 shadow-sm">
           <div className="mb-4 flex items-center justify-between px-2">
             <p className="text-xs font-semibold uppercase tracking-wider text-[#b18793]">
@@ -474,7 +651,7 @@ export default function MenuManager() {
           )}
         </aside>
 
-        <section className="rounded-[24px] border border-[#f2d6df] bg-white p-4 sm:rounded-[28px] sm:p-5 shadow-sm">
+        <section className="rounded-[28px] border border-[#f2d6df] bg-white p-5 shadow-sm">
           {!selectedCategory ? (
             <div className="flex min-h-[400px] flex-col items-center justify-center text-center">
               <div className="text-6xl">☕</div>
@@ -527,7 +704,7 @@ export default function MenuManager() {
                   </p>
                 </div>
               ) : (
-                <div className="-mx-2 overflow-x-auto px-2 sm:mx-0 sm:px-0">
+                <div className="overflow-x-auto">
                   <table className="w-full min-w-[720px]">
                     <thead>
                       <tr className="border-b border-[#f4e1e7] text-left text-xs uppercase tracking-wider text-[#ae8994]">
@@ -621,8 +798,8 @@ export default function MenuManager() {
       </div>
 
       {showCategoryForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#4b2734]/40 p-4 backdrop-blur-sm">
-          <div className="pos-modal max-h-[calc(100dvh-24px)] w-full max-w-md overflow-y-auto rounded-[26px] bg-white p-4 shadow-2xl sm:rounded-[30px] sm:p-6">
+        <div className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-[#4b2734]/40 p-2 backdrop-blur-sm sm:items-center sm:p-4">
+          <div className="pos-modal max-h-[calc(100dvh-16px)] w-full max-w-md overflow-y-auto rounded-[26px] bg-white p-4 shadow-2xl sm:rounded-[30px] sm:p-6">
             <h2 className="text-xl font-bold text-[#633c49]">
               ＋ Tạo mục
             </h2>
@@ -694,8 +871,8 @@ export default function MenuManager() {
       )}
 
       {showProductForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#4b2734]/40 p-4 backdrop-blur-sm">
-          <div className="pos-modal max-h-[calc(100dvh-24px)] w-full max-w-md overflow-y-auto rounded-[26px] bg-white p-4 shadow-2xl sm:rounded-[30px] sm:p-6">
+        <div className="fixed inset-0 z-50 flex items-end justify-center overflow-y-auto bg-[#4b2734]/40 p-2 backdrop-blur-sm sm:items-center sm:p-4">
+          <div className="pos-modal max-h-[calc(100dvh-16px)] w-full max-w-md overflow-y-auto rounded-[26px] bg-white p-4 shadow-2xl sm:rounded-[30px] sm:p-6">
             <h2 className="text-xl font-bold text-[#633c49]">
               ＋ Thêm món
             </h2>

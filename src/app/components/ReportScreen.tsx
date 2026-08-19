@@ -376,7 +376,7 @@ export default function ReportScreen() {
     <div className="space-y-5">
 
       {/* HEADER */}
-      <section className="rounded-[24px] border border-[#f2d6df] bg-white p-4 sm:rounded-[28px] sm:p-5 shadow-sm">
+      <section className="rounded-[28px] border border-[#f2d6df] bg-white p-5 shadow-sm">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm font-bold text-[#d96f94]">
@@ -404,7 +404,7 @@ export default function ReportScreen() {
       </section>
 
       {/* FILTER */}
-      <section className="rounded-[24px] border border-[#f2d6df] bg-white p-4 sm:rounded-[28px] sm:p-5 shadow-sm">
+      <section className="rounded-[28px] border border-[#f2d6df] bg-white p-5 shadow-sm">
         <p className="mb-3 text-sm font-bold text-[#633c49]">
           Thời gian báo cáo
         </p>
@@ -578,7 +578,75 @@ export default function ReportScreen() {
                 </p>
               </div>
             ) : (
-              <div className="-mx-2 overflow-x-auto px-2 sm:mx-0 sm:px-0">
+              <>
+              <div className="space-y-3 p-4 md:hidden">
+                {productReports.map((product) => (
+                  <article
+                    key={product.key}
+                    className="rounded-2xl border border-[#f4dce4] bg-[#fffafb] p-4"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="break-words font-bold text-[#633c49]">
+                          {product.name}
+                        </p>
+                        <p className="mt-1 text-sm font-bold text-[#d96f94]">
+                          Đã bán: {product.quantity}
+                        </p>
+                      </div>
+
+                      <div className="text-right">
+                        <p className="text-xs text-[#a47b87]">
+                          Lợi nhuận
+                        </p>
+                        <p className="font-bold text-[#633c49]">
+                          {formatPrice(product.profit)}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 grid grid-cols-2 gap-2">
+                      <div className="rounded-xl bg-white p-3">
+                        <p className="text-[11px] font-semibold uppercase text-[#b18793]">
+                          Trước giảm
+                        </p>
+                        <p className="mt-1 text-sm font-semibold text-[#633c49]">
+                          {formatPrice(product.grossRevenue)}
+                        </p>
+                      </div>
+
+                      <div className="rounded-xl bg-white p-3">
+                        <p className="text-[11px] font-semibold uppercase text-[#b18793]">
+                          Giảm giá
+                        </p>
+                        <p className="mt-1 text-sm font-semibold text-[#d96f94]">
+                          -{formatPrice(product.discount)}
+                        </p>
+                      </div>
+
+                      <div className="rounded-xl bg-white p-3">
+                        <p className="text-[11px] font-semibold uppercase text-[#b18793]">
+                          Thực thu
+                        </p>
+                        <p className="mt-1 text-sm font-semibold text-[#633c49]">
+                          {formatPrice(product.netRevenue)}
+                        </p>
+                      </div>
+
+                      <div className="rounded-xl bg-white p-3">
+                        <p className="text-[11px] font-semibold uppercase text-[#b18793]">
+                          Giá vốn
+                        </p>
+                        <p className="mt-1 text-sm font-semibold text-[#805965]">
+                          {formatPrice(product.cost)}
+                        </p>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              <div className="hidden overflow-x-auto md:block">
                 <table className="w-full min-w-[900px]">
                   <thead className="bg-[#fff7f9] text-left text-sm text-[#98717d]">
                     <tr>
@@ -650,6 +718,7 @@ export default function ReportScreen() {
                   </tbody>
                 </table>
               </div>
+              </>
             )}
           </section>
         </>
