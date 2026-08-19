@@ -376,11 +376,11 @@ export default function ReportScreen() {
     <div className="space-y-5">
 
       {/* HEADER */}
-      <section className="rounded-[28px] border border-[#f2d6df] bg-white p-5 shadow-sm">
+      <section className="rounded-[24px] border border-[#f2d6df] bg-white p-4 sm:rounded-[28px] sm:p-5 shadow-sm">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm font-bold text-[#d96f94]">
-              📊 Pink Coffee
+              📊 Sapa Coffee
             </p>
 
             <h1 className="mt-1 text-2xl font-bold text-[#633c49]">
@@ -404,7 +404,7 @@ export default function ReportScreen() {
       </section>
 
       {/* FILTER */}
-      <section className="rounded-[28px] border border-[#f2d6df] bg-white p-5 shadow-sm">
+      <section className="rounded-[24px] border border-[#f2d6df] bg-white p-4 sm:rounded-[28px] sm:p-5 shadow-sm">
         <p className="mb-3 text-sm font-bold text-[#633c49]">
           Thời gian báo cáo
         </p>
@@ -578,7 +578,7 @@ export default function ReportScreen() {
                 </p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
+              <div className="-mx-2 overflow-x-auto px-2 sm:mx-0 sm:px-0">
                 <table className="w-full min-w-[900px]">
                   <thead className="bg-[#fff7f9] text-left text-sm text-[#98717d]">
                     <tr>

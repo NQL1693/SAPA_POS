@@ -359,12 +359,12 @@ export function OrderHistory() {
           HEADER
       ====================== */}
 
-      <section className="rounded-[28px] border border-[#f2d6df] bg-white p-5 shadow-sm">
+      <section className="rounded-[24px] border border-[#f2d6df] bg-white p-4 sm:rounded-[28px] sm:p-5 shadow-sm">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
           <div>
             <p className="text-sm font-bold text-[#d96f94]">
-              📋 Pink Coffee
+              📋 Sapa Coffee
             </p>
 
             <h1 className="mt-1 text-2xl font-bold text-[#633c49]">
@@ -395,7 +395,7 @@ export function OrderHistory() {
           BỘ LỌC
       ====================== */}
 
-      <section className="rounded-[28px] border border-[#f2d6df] bg-white p-5 shadow-sm">
+      <section className="rounded-[24px] border border-[#f2d6df] bg-white p-4 sm:rounded-[28px] sm:p-5 shadow-sm">
 
         <div className="mb-4">
           <h2 className="font-bold text-[#633c49]">
@@ -790,7 +790,7 @@ export function OrderHistory() {
           }}
         >
 
-          <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-[30px] bg-white shadow-2xl">
+          <div className="pos-modal max-h-[calc(100dvh-24px)] w-full max-w-lg overflow-y-auto rounded-[26px] bg-white shadow-2xl sm:max-h-[90vh] sm:rounded-[30px]">
 
             {/* POPUP HEADER */}
 
@@ -801,7 +801,7 @@ export function OrderHistory() {
                 <div>
 
                   <p className="text-sm font-bold text-[#d96f94]">
-                    Pink Coffee
+                    Sapa Coffee
                   </p>
 
                   <div className="mt-1 flex flex-wrap items-center gap-2">

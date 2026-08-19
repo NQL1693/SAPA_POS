@@ -28,9 +28,9 @@ export default function Cart({
   onPayment,
 }: CartProps) {
   return (
-    <aside className="w-full lg:max-w-[410px]">
-      <div className="sticky top-5 flex max-h-[calc(100vh-40px)] flex-col overflow-hidden rounded-[28px] border border-[#f2d6df] bg-white shadow-xl shadow-[#d88ca5]/10">
-        <div className="border-b border-[#f5e0e6] bg-[#fff8fa] px-5 py-5">
+    <aside className="w-full min-w-0 xl:max-w-[410px]">
+      <div className="flex flex-col overflow-hidden rounded-[24px] border border-[#f2d6df] bg-white shadow-xl shadow-[#d88ca5]/10 md:rounded-[28px] xl:sticky xl:top-5 xl:max-h-[calc(100vh-40px)]">
+        <div className="border-b border-[#f5e0e6] bg-[#fff8fa] px-4 py-4 sm:px-5 sm:py-5">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-bold text-[#633c49]">
@@ -54,9 +54,9 @@ export default function Cart({
           </div>
         </div>
 
-        <div className="min-h-[180px] flex-1 overflow-y-auto p-4">
+        <div className="min-h-[120px] flex-1 overflow-y-auto p-3 sm:p-4">
           {cart.length === 0 ? (
-            <div className="flex min-h-[240px] flex-col items-center justify-center text-center">
+            <div className="flex min-h-[160px] sm:min-h-[240px] flex-col items-center justify-center text-center">
               <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-[#fff0f4] text-4xl">
                 🛍️
               </div>
@@ -123,7 +123,7 @@ export default function Cart({
           )}
         </div>
 
-        <div className="border-t border-[#f5e0e6] bg-white p-5">
+        <div className="border-t border-[#f5e0e6] bg-white p-4 sm:p-5">
           <div className="mb-4 flex items-center justify-between">
             <span className="text-sm text-[#98717d]">
               Tạm tính

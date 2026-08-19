@@ -86,14 +86,14 @@ const menu = [
 ];
 
   return (
-    <aside className="w-full shrink-0 rounded-[28px] border border-[#f2d6df] bg-white p-3 shadow-sm lg:w-[220px]">
-      <div className="mb-4 px-3 pt-2">
+    <aside className="fixed inset-x-3 bottom-3 z-40 rounded-[24px] border border-[#f2d6df] bg-white/95 p-2 shadow-xl backdrop-blur lg:static lg:inset-auto lg:z-auto lg:w-[220px] lg:shrink-0 lg:rounded-[28px] lg:p-3 lg:shadow-sm">
+      <div className="mb-4 hidden px-3 pt-2 lg:block">
         <p className="text-xs font-semibold uppercase tracking-wider text-[#b18793]">
           Quản lý
         </p>
       </div>
 
-      <div className="grid grid-cols-3 gap-2 lg:grid-cols-1">
+      <div className="grid grid-cols-4 gap-1.5 lg:grid-cols-1 lg:gap-2">
         {menu.map((item) => {
           const active = activeScreen === item.id;
 
@@ -102,14 +102,14 @@ const menu = [
               key={item.id}
               type="button"
               onClick={() => onChange(item.id)}
-              className={`flex items-center justify-center gap-2 rounded-2xl px-3 py-3 text-sm font-bold transition lg:justify-start ${
+              className={`flex min-w-0 flex-col items-center justify-center gap-1 rounded-2xl px-1 py-2 text-[11px] font-bold transition lg:flex-row lg:justify-start lg:gap-2 lg:px-3 lg:py-3 lg:text-sm ${
                 active
                   ? "bg-[#f8c8d8] text-[#633c49] shadow-sm"
                   : "text-[#805965] hover:bg-[#fff0f4]"
               }`}
             >
               <span className="text-lg">{item.icon}</span>
-              <span>{item.label}</span>
+              <span className="max-w-full truncate">{item.label}</span>
             </button>
           );
         })}
@@ -437,7 +437,7 @@ export default function Home() {
       <div className="mx-auto flex min-h-screen max-w-[1600px] flex-col">
         <Header />
 
-        <div className="flex flex-1 flex-col gap-5 p-4 md:p-6 lg:flex-row">
+        <div className="flex flex-1 flex-col gap-5 p-3 pb-28 sm:p-4 sm:pb-28 md:p-6 md:pb-28 lg:flex-row lg:pb-6">
           <Sidebar
             activeScreen={activeScreen}
             onChange={changeScreen}
@@ -454,8 +454,8 @@ export default function Home() {
                   </div>
                 )}
 
-                <div className="grid gap-5 xl:grid-cols-[1fr_410px]">
-                  <section className="min-w-0 rounded-[28px] border border-[#f2d6df] bg-white p-4 shadow-sm md:p-5">
+                <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_410px] xl:gap-5">
+                  <section className="min-w-0 overflow-hidden rounded-[24px] border border-[#f2d6df] bg-white p-3 shadow-sm sm:p-4 md:rounded-[28px] md:p-5">
                     <div className="mb-5">
                       <h2 className="text-2xl font-bold text-[#633c49]">
                         Chọn món
@@ -517,7 +517,7 @@ export default function Home() {
                         </div>
                       </div>
                     ) : (
-                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
+                      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 xl:grid-cols-4">
                         {filteredProducts.map(
                           (product) => (
                             <ProductCard

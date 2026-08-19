@@ -72,11 +72,11 @@ export default function LoginPage() {
             </div>
 
             <p className="mt-5 text-sm font-bold text-[#d96f94]">
-              PINK COFFEE
+              SAPA COFFEE
             </p>
 
             <h1 className="mt-1 text-2xl font-bold text-[#633c49]">
-              Pink Coffee POS
+              Sapa Coffee POS
             </h1>
 
             <p className="mt-2 text-sm text-[#a47b87]">
@@ -127,7 +127,7 @@ export default function LoginPage() {
             >
               {loading
                 ? "Đang mở POS..."
-                : "Mở Pink Coffee POS"}
+                : "Mở Sapa Coffee POS"}
             </button>
           </form>
 

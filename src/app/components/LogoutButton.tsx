@@ -54,7 +54,7 @@ export function LogoutButton() {
       disabled={loading}
       title="Đăng xuất"
       aria-label="Đăng xuất"
-      className="flex h-11 shrink-0 items-center justify-center rounded-2xl bg-[#fff0f4] px-3 font-bold text-[#d96f94] transition active:scale-95 hover:bg-[#ffe5ed] disabled:opacity-50 sm:px-4"
+      className="flex h-10 sm:h-11 shrink-0 items-center justify-center rounded-2xl bg-[#fff0f4] px-3 font-bold text-[#d96f94] transition active:scale-95 hover:bg-[#ffe5ed] disabled:opacity-50 sm:px-4"
     >
       {loading ? (
         <span className="text-sm">

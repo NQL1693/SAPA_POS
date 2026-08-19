@@ -1,26 +1,157 @@
 @import "tailwindcss";
 
+/* =========================
+   SAPA COFFEE POS
+   GLOBAL STYLES
+========================= */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fff5f8;
+  --foreground: #4a3038;
+
+  --pink-50: #fff8fa;
+  --pink-100: #fff0f4;
+  --pink-200: #f8dce5;
+  --pink-300: #efd5df;
+  --pink-500: #e88eab;
+  --pink-600: #d96f94;
+
+  --brown: #633c49;
+  --muted: #a47b87;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* =========================
+   RESET
+========================= */
+
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  background: var(--background);
 }
 
 body {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/*
+  Quan trọng cho iPhone:
+  media, table, input... không được ép trang rộng hơn viewport.
+*/
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+input,
+select,
+textarea {
+  min-width: 0;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 767px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /*
+    Safari iPhone có thể zoom input nếu font < 16px.
+    Chúng ta ngăn trò khá khó chịu này.
+  */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  /*
+    Phần nội dung POS có thể chừa chỗ cho
+    bottom navigation sau này.
+  */
+  .pos-mobile-content {
+    width: 100%;
+    max-width: 100vw;
+    padding-bottom: calc(88px + env(safe-area-inset-bottom));
+  }
+
+  /*
+    Card mobile luôn nằm trong màn hình.
+  */
+  .pos-mobile-card {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /*
+    Modal trên mobile.
+  */
+  .pos-modal {
+    width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
+    max-height: calc(100dvh - 24px);
+  }
+}
+
+/* =========================
+   DESKTOP
+========================= */
+
+@media (min-width: 768px) {
+  /*
+    Không đặt max-width ở đây.
+    Desktop tiếp tục dùng chiều rộng layout hiện tại.
+  */
+  .pos-desktop-content {
+    width: 100%;
+  }
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e9c5d1;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
 }

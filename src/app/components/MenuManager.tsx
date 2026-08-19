@@ -337,11 +337,11 @@ export default function MenuManager() {
 
   return (
     <div>
-      <div className="mb-5 rounded-[28px] border border-[#f2d6df] bg-white p-5 shadow-sm">
+      <div className="mb-5 rounded-[24px] border border-[#f2d6df] bg-white p-4 sm:rounded-[28px] sm:p-5 shadow-sm">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm font-semibold text-[#d96f94]">
-              ☕ Pink Coffee
+              ☕ Sapa Coffee
             </p>
 
             <h1 className="mt-1 text-2xl font-bold text-[#633c49]">
@@ -474,7 +474,7 @@ export default function MenuManager() {
           )}
         </aside>
 
-        <section className="rounded-[28px] border border-[#f2d6df] bg-white p-5 shadow-sm">
+        <section className="rounded-[24px] border border-[#f2d6df] bg-white p-4 sm:rounded-[28px] sm:p-5 shadow-sm">
           {!selectedCategory ? (
             <div className="flex min-h-[400px] flex-col items-center justify-center text-center">
               <div className="text-6xl">☕</div>
@@ -527,7 +527,7 @@ export default function MenuManager() {
                   </p>
                 </div>
               ) : (
-                <div className="overflow-x-auto">
+                <div className="-mx-2 overflow-x-auto px-2 sm:mx-0 sm:px-0">
                   <table className="w-full min-w-[720px]">
                     <thead>
                       <tr className="border-b border-[#f4e1e7] text-left text-xs uppercase tracking-wider text-[#ae8994]">
@@ -622,7 +622,7 @@ export default function MenuManager() {
 
       {showCategoryForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#4b2734]/40 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-[30px] bg-white p-6 shadow-2xl">
+          <div className="pos-modal max-h-[calc(100dvh-24px)] w-full max-w-md overflow-y-auto rounded-[26px] bg-white p-4 shadow-2xl sm:rounded-[30px] sm:p-6">
             <h2 className="text-xl font-bold text-[#633c49]">
               ＋ Tạo mục
             </h2>
@@ -695,7 +695,7 @@ export default function MenuManager() {
 
       {showProductForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#4b2734]/40 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-[30px] bg-white p-6 shadow-2xl">
+          <div className="pos-modal max-h-[calc(100dvh-24px)] w-full max-w-md overflow-y-auto rounded-[26px] bg-white p-4 shadow-2xl sm:rounded-[30px] sm:p-6">
             <h2 className="text-xl font-bold text-[#633c49]">
               ＋ Thêm món
             </h2>

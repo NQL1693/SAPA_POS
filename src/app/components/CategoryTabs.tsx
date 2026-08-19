@@ -15,7 +15,7 @@ export default function CategoryTabs({
   onCategoryChange,
 }: CategoryTabsProps) {
   return (
-    <div className="mb-5 flex gap-2 overflow-x-auto pb-1">
+    <div className="-mx-1 mb-4 flex gap-2 overflow-x-auto px-1 pb-2 sm:mb-5">
       {categories.map((category) => {
         const active = activeCategory === category.name;
 
@@ -24,7 +24,7 @@ export default function CategoryTabs({
             key={category.name}
             type="button"
             onClick={() => onCategoryChange(category.name)}
-            className={`flex shrink-0 items-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-semibold transition ${
+            className={`flex shrink-0 items-center gap-2 rounded-2xl px-3 py-2.5 text-sm sm:px-4 font-semibold transition ${
               active
                 ? "bg-[#e88eab] text-white shadow-md shadow-[#e8a5ba]/30"
                 : "bg-white text-[#805965] hover:bg-[#fff0f4]"
